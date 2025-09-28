@@ -39,7 +39,7 @@ func NewSessionManager(server *Server) *SessionManager {
 func (m *SessionManager) Get(authenticationToken ua.NodeID) (*Session, bool) {
 	m.RLock()
 	defer m.RUnlock()
-	if s, ok := m.sessionsByToken[authenticationToken]; ok && !s.IsExpired(){
+	if s, ok := m.sessionsByToken[authenticationToken]; ok && !s.IsExpired() {
 		s.SetLastAccess(time.Now())
 		return s, ok
 	}

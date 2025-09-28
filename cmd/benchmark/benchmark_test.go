@@ -53,9 +53,8 @@ func BenchmarkGopcuaEncode(b *testing.B) {
 		DiagnosticInfos: []*gopcua.DiagnosticInfo{},
 	}
 	conn := &MockWriter{}
-	b.ResetTimer()
 
-	for i := 0; i < b.N; i++ {
+	for b.Loop() {
 		body, err := gopcua.Encode(pr)
 		if err != nil {
 			b.Fatal(err)
@@ -97,9 +96,8 @@ func BenchmarkAwcullenEncode(b *testing.B) {
 	}
 	ec := awcullen.NewEncodingContext()
 	conn := &MockWriter{}
-	b.ResetTimer()
 
-	for i := 0; i < b.N; i++ {
+	for b.Loop() {
 		enc := awcullen.NewBinaryEncoder(conn, ec)
 		if err := enc.Encode(pr); err != nil {
 			b.Fatal(err)

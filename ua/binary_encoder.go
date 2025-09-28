@@ -490,10 +490,7 @@ func (enc *BinaryEncoder) WriteString(value string) error {
 // WriteDateTime writes a date/time.
 func (enc *BinaryEncoder) WriteDateTime(value time.Time) error {
 	// ticks are 100 nanosecond intervals since January 1, 1601
-	ticks := (value.Unix()+11644473600)*10000000 + int64(value.Nanosecond())/100
-	if ticks < 0 {
-		ticks = 0
-	}
+	ticks := max((value.Unix()+11644473600)*10000000+int64(value.Nanosecond())/100, 0)
 	if ticks >= 2650467743990000000 {
 		ticks = 0x7FFFFFFFFFFFFFFF
 	}

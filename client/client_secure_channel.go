@@ -616,11 +616,7 @@ func (ch *clientSecureChannel) sendOpenSecureChannelRequest(ctx context.Context,
 			paddingHeaderSize = 0
 			paddingSize = 0
 			maxBodySize = int(ch.sendBufferSize) - plainHeaderSize - sequenceHeaderSize - paddingHeaderSize - signatureSize
-			if bodyCount < maxBodySize {
-				bodySize = bodyCount
-			} else {
-				bodySize = maxBodySize
-			}
+			bodySize = min(bodyCount, maxBodySize)
 			chunkSize = plainHeaderSize + sequenceHeaderSize + bodySize + paddingSize + paddingHeaderSize + signatureSize
 		}
 
@@ -807,11 +803,7 @@ func (ch *clientSecureChannel) sendCloseSecureChannelRequest(ctx context.Context
 			paddingHeaderSize = 0
 			paddingSize = 0
 			maxBodySize = int(ch.sendBufferSize) - plainHeaderSize - sequenceHeaderSize - paddingHeaderSize - signatureSize
-			if bodyCount < maxBodySize {
-				bodySize = bodyCount
-			} else {
-				bodySize = maxBodySize
-			}
+			bodySize = min(bodyCount, maxBodySize)
 			chunkSize = plainHeaderSize + sequenceHeaderSize + bodySize + paddingSize + paddingHeaderSize + signatureSize
 		}
 
@@ -1246,11 +1238,7 @@ func (ch *clientSecureChannel) sendServiceRequest(ctx context.Context, request u
 			paddingHeaderSize = 0
 			paddingSize = 0
 			maxBodySize = int(ch.sendBufferSize) - plainHeaderSize - sequenceHeaderSize - paddingHeaderSize - signatureSize
-			if bodyCount < maxBodySize {
-				bodySize = bodyCount
-			} else {
-				bodySize = maxBodySize
-			}
+			bodySize = min(bodyCount, maxBodySize)
 			chunkSize = plainHeaderSize + sequenceHeaderSize + bodySize + paddingSize + paddingHeaderSize + signatureSize
 		}
 
@@ -1799,7 +1787,7 @@ func calculatePSHA(secret, seed []byte, sizeBytes int, securityPolicyURI string)
 	output := make([]byte, sizeBytes)
 	a := seed
 	iterations := (sizeBytes + size - 1) / size
-	for i := 0; i < iterations; i++ {
+	for i := range iterations {
 		mac.Reset()
 		mac.Write(a)
 		buf := mac.Sum(nil)
@@ -1809,10 +1797,7 @@ func calculatePSHA(secret, seed []byte, sizeBytes int, securityPolicyURI string)
 		mac.Write(seed)
 		buf2 := mac.Sum(nil)
 		m := size * i
-		n := sizeBytes - m
-		if n > size {
-			n = size
-		}
+		n := min(sizeBytes-m, size)
 		copy(output[m:m+n], buf2)
 	}
 	return output

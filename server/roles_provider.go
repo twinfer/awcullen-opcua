@@ -3,6 +3,7 @@ package server
 import (
 	"crypto/sha1"
 	"fmt"
+	"slices"
 
 	"github.com/awcullen/opcua/ua"
 )
@@ -144,11 +145,8 @@ func (p *RulesBasedRolesProvider) GetRoles(userIdentity any, applicationURI stri
 	roles := []ua.NodeID{}
 	for _, rule := range p.identityMappingRules {
 		ok := rule.ApplicationsExclude // true means the following applications should be excluded
-		for _, uri := range rule.Applications {
-			if uri == applicationURI {
-				ok = !rule.ApplicationsExclude
-				break
-			}
+		if slices.Contains(rule.Applications, applicationURI) {
+			ok = !rule.ApplicationsExclude
 		}
 		if !ok {
 			break // continue with next rule

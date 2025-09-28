@@ -335,7 +335,7 @@ func (srv *Server) Close() error {
 			time.Sleep(time.Second)
 		}
 		srv.secondsTillShutdown = uint32(0)
-		
+
 	} else {
 		srv.state = ua.ServerStateShutdown
 		srv.Unlock()

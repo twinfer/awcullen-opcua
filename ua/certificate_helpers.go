@@ -173,7 +173,7 @@ func ValidateCertificate(certificates []*x509.Certificate, keyUsages []x509.ExtK
 				// check certificate usage
 				useValid := false
 				if j == 0 { // is leaf
-					outer2:
+				outer2:
 					for _, eku := range c.ExtKeyUsage {
 						for _, ku := range keyUsages {
 							if eku == ku {

@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"slices"
 	"strconv"
 	"strings"
 	"sync"
@@ -516,22 +517,12 @@ func (m *NamespaceManager) OnEvent(target *ObjectNode, evt ua.Event) error {
 
 // Any returns true if the given function returns true for any of the given nodes.
 func Any(nodes []ua.NodeID, f func(n ua.NodeID) bool) bool {
-	for _, n := range nodes {
-		if f(n) {
-			return true
-		}
-	}
-	return false
+	return slices.ContainsFunc(nodes, f)
 }
 
 // Contains returns true if the given node is found to equal any of the given nodes.
 func Contains(nodes []ua.NodeID, node ua.NodeID) bool {
-	for _, n := range nodes {
-		if n == node {
-			return true
-		}
-	}
-	return false
+	return slices.Contains(nodes, node)
 }
 
 // LoadNodeSetFromFile loads the UANodeSet XML from a file with the given path into the namespace.

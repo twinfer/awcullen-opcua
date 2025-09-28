@@ -2418,7 +2418,7 @@ func (dec *BinaryDecoder) ReadByteStringArray(value *[]ByteString) error {
 		return nil
 	}
 	temp := make([]ByteString, n)
-	for i := 0; i < len(temp); i++ {
+	for i := range temp {
 		if err := dec.ReadByteString(&temp[i]); err != nil {
 			return BadDecodingError
 		}
@@ -2438,7 +2438,7 @@ func (dec *BinaryDecoder) ReadXMLElementArray(value *[]XMLElement) error {
 		return nil
 	}
 	temp := make([]XMLElement, n)
-	for i := 0; i < len(temp); i++ {
+	for i := range temp {
 		if err := dec.ReadXMLElement(&temp[i]); err != nil {
 			return BadDecodingError
 		}
@@ -2578,7 +2578,7 @@ func (dec *BinaryDecoder) ReadDataValueArray(value *[]DataValue) error {
 		return nil
 	}
 	temp := make([]DataValue, n)
-	for i := 0; i < len(temp); i++ {
+	for i := range temp {
 		if err := dec.ReadDataValue(&temp[i]); err != nil {
 			return BadDecodingError
 		}
@@ -2598,7 +2598,7 @@ func (dec *BinaryDecoder) ReadVariantArray(value *[]Variant) error {
 		return nil
 	}
 	temp := make([]Variant, n)
-	for i := 0; i < len(temp); i++ {
+	for i := range temp {
 		if err := dec.ReadVariant(&temp[i]); err != nil {
 			return BadDecodingError
 		}
@@ -2618,7 +2618,7 @@ func (dec *BinaryDecoder) ReadDiagnosticInfoArray(value *[]DiagnosticInfo) error
 		return nil
 	}
 	temp := make([]DiagnosticInfo, n)
-	for i := 0; i < len(temp); i++ {
+	for i := range temp {
 		if err := dec.ReadDiagnosticInfo(&temp[i]); err != nil {
 			return BadDecodingError
 		}

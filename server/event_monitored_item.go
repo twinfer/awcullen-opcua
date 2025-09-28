@@ -298,7 +298,7 @@ func (mi *EventMonitoredItem) notifications(max int) (notifications []any, more 
 	mi.Lock()
 	defer mi.Unlock()
 	notifications = make([]any, 0, 4)
-	for i := 0; i < max; i++ {
+	for range max {
 		if mi.queue.Len() > 0 {
 			notifications = append(notifications, mi.queue.PopFront())
 		} else {
